@@ -4,6 +4,7 @@ import {pickFunction} from "@/Utils/helper/pickFunction";
 import {AuthServices} from "@/App/modules/Auth/auth.services";
 import {sendResponse} from "@/Utils/helper/sendResponse";
 import {AuthValidation} from "@/App/modules/Auth/auth.validation";
+import {prisma} from "@/Config";
 
 const singUp = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const data =
@@ -20,17 +21,34 @@ const singUp = catchAsync(async (req: Request, res: Response, next: NextFunction
 })
 
 const login = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const data = pickFunction(req.body, ["email", "password", 'user'])
-    const validateData = AuthValidation.singIn.parse(data)
-    const {accessToken, refreshToken} = await AuthServices.logIntoAccount(validateData, data.user)
-
-    res.cookie('refreshToken', refreshToken)
-    res.status(200).json({
-        success: true,
-        statusCode: 200,
-        message: "User signin successfully!",
-        token: accessToken
-    })
+   try {
+        const data = pickFunction(req.body, ['email', 'password', 'role']);
+        const validateData = AuthValidation.singIn.parse(data);
+        const user = await prisma.user.findUnique({
+            where: {
+                email: data.email
+            }
+        })
+        if(!user) {
+            return res.status(404).json({
+                success: false,
+                statusCode: 404,
+                message: "User not found"
+            })
+        }
+        const {accessToken, refreshToken} = await AuthServices.logIntoAccount(validateData, user)
+        console.log(data, accessToken, refreshToken, "check data, tokens");
+        res.cookie('refreshToken', refreshToken)
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: "User signin successfully!",
+            token: accessToken
+        })
+    
+   } catch (error) {
+        console.log(error, "error")
+   }
 })
 
 

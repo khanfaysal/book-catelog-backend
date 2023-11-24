@@ -51,6 +51,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 
     }
+    
     sendResponse.error(res, defaultError)
 }
 

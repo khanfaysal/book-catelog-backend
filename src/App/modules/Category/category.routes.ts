@@ -20,7 +20,7 @@ CategoryRoutes
         CategoryController.singleCategory
     )
     .post('/create-category',
-        // AccessOnly(['admin']),
+        AccessOnly(['admin']),
         CategoryController.createCategory
     )
     .patch('/:id',
