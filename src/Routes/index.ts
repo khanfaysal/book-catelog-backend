@@ -12,7 +12,6 @@ import {UserController} from "@/App/modules/User/user.controller";
 import AccessOnly from "@/Middlewares/AccessLimit";
 
 const rootRouter = Router()
-const docs = YAML.load(path.join(process.cwd(), "docs.yml"))
 
 rootRouter
     .use('/auth', AuthRoutes)
@@ -25,7 +24,6 @@ rootRouter
         AccessOnly(['admin', 'customer']),
         UserController.getUserProfile
     )
-    .use('/docs', swaggerUI.serve, swaggerUI.setup(docs))
 
 
 export default rootRouter
