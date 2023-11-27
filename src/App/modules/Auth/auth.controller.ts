@@ -37,7 +37,9 @@ const login = catchAsync(async (req: Request, res: Response, next: NextFunction)
             })
         }
         const {accessToken, refreshToken} = await AuthServices.logIntoAccount(validateData, user)
-        console.log(data, accessToken, refreshToken, "check data, tokens");
+        console.log(data, "data");
+        console.log( accessToken, "access token");
+        console.log(refreshToken, "refresh token");
         res.cookie('refreshToken', refreshToken)
         res.status(200).json({
             success: true,
