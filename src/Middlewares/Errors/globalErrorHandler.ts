@@ -18,12 +18,14 @@ import {processPrismaError} from "@/Utils/validation/prisma.validation";
 
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    console.log(err, "error")
     let defaultError: TCustomErrorResponse = {
         statusCode: 500,
         message: "Something went wrong !.",
         errorMessages: [],
         stack: config.node_env === "development" && err.stack ? err.stack : undefined
     }
+  
 
     if (err instanceof Error.ValidationError || err instanceof Error.CastError) {
         const handler = processMongooseValidationError(err)

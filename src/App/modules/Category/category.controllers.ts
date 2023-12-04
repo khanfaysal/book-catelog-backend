@@ -32,6 +32,7 @@ const singleCategory = catchAsync(async (req: Request, res: Response, next: Next
 
 const createCategory = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = pickFunction(req.body, ["title"])
+    console.log(payload, "payload")
     const validated = CategoryValidation.categoryZodSchema.parse(payload)
     const data = await CategoryServices.newCategory(validated)
 

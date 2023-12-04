@@ -8,12 +8,14 @@ import {CustomJwtPayload} from "@/Utils/types/jwtHelper.type";
 
 const AccessOnly = (accessRole: string[]) => catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization
+    console.log(token, "token")
 
     const accessToken = z.string({
         required_error: "Access token is required."
     }).parse(token)
 
     const payload: unknown = jwt.verify(accessToken, Config.jwt.accessToken.secret as string)
+    console.log(payload, "payload")
     const {id, role} = payload as CustomJwtPayload
 
     if (accessRole.includes(role)) {
