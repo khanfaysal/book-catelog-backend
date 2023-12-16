@@ -24,7 +24,7 @@ BooksRoutes
         BookController.booksByCategoryId
     )
     .post('/create-book',
-        // AccessOnly(['admin']),
+        AccessOnly(['admin']),
         BookController.createNewBook
     )
     .patch('/:id',

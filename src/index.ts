@@ -12,6 +12,7 @@ const {port} = config
 const main = async () => {
     try {
         server.listen(port, () => {
+            console.log("Hello world")
             console.log(`Server is listening on ${port}. Url: http://localhost:${port}`)
         })
     } catch (e) {
